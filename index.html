@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f7eaf1">
+<title>Chá Revelação • Mislene &amp; Gabriel</title>
+<style>
+:root{--blue:#78a9d8;--blue2:#e7f2ff;--pink:#d989aa;--pink2:#ffedf4;--ink:#53647a;--cream:#fffdfd}
+*{box-sizing:border-box}body{margin:0;font-family:Georgia,'Times New Roman',serif;color:var(--ink);background:linear-gradient(135deg,#eaf4ff,#fff0f5);min-height:100vh;padding:24px 14px}
+.wrap{max-width:680px;margin:auto}.card{background:rgba(255,255,255,.92);border:1px solid #fff;border-radius:28px;overflow:hidden;box-shadow:0 18px 55px #829bb522}
+.hero{position:relative;text-align:center;padding:46px 24px 34px;background:radial-gradient(circle at 15% 20%,#fff 0 5%,transparent 6%),linear-gradient(135deg,#e5f2ff,#ffedf4)}
+.kicker{font:600 11px Arial,sans-serif;letter-spacing:4px;text-transform:uppercase;color:#8298b2}
+h1{font-size:clamp(34px,8vw,54px);line-height:1.02;margin:15px 0 8px;color:#6e91b8;font-weight:500}
+.names{font-size:25px;color:#c8799b;margin:12px 0}.subtitle{font-size:18px;line-height:1.5;max-width:440px;margin:0 auto}
+.balloons{font-size:42px;letter-spacing:9px;margin:12px 0 2px}
+.ribbon{display:inline-block;background:#fff;border-radius:999px;padding:10px 18px;margin-top:20px;color:#b66f91;font:700 12px Arial,sans-serif;letter-spacing:1.5px}
+.details{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:22px}
+.detail{background:#f8fbff;border-radius:18px;padding:17px;text-align:center}.detail.full{grid-column:1/-1;background:#fff7fa}
+.label{font:700 10px Arial,sans-serif;letter-spacing:2px;text-transform:uppercase;color:#91a4ba}.value{font-size:17px;line-height:1.45;margin-top:7px}
+section{padding:10px 24px 26px;text-align:center}h2{font-size:27px;font-weight:500;color:#b87596;margin:12px 0 8px}
+p{font:14px/1.6 Arial,sans-serif;color:#718197;margin:8px auto 18px}
+.votes{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0}
+.vote{border:2px solid transparent;border-radius:20px;padding:18px 10px;cursor:pointer;font:700 16px Arial,sans-serif;transition:.2s}
+.vote span{display:block;font-size:32px;margin-bottom:8px}.boy{background:var(--blue2);color:#4f83b5}.girl{background:var(--pink2);color:#bf6e91}
+.vote.selected{border-color:currentColor;transform:translateY(-3px);box-shadow:0 8px 20px #7894b322}
+.field{text-align:left;margin:14px 0}.field label{display:block;font:700 11px Arial,sans-serif;letter-spacing:1px;text-transform:uppercase;color:#8798ad;margin:0 0 7px}
+input,select{width:100%;padding:14px 15px;border:1px solid #e4e9f0;border-radius:13px;font:15px Arial,sans-serif;color:#52647b;background:white;outline:none}
+input:focus,select:focus{border-color:#9dbddd;box-shadow:0 0 0 3px #dcecff}
+.primary{width:100%;border:0;border-radius:999px;padding:16px 18px;background:linear-gradient(100deg,#83add7,#d88eae);color:white;font:700 14px Arial,sans-serif;letter-spacing:.5px;cursor:pointer;margin-top:8px}
+.note{font:12px/1.5 Arial,sans-serif;color:#99a5b4;margin-top:13px}
+footer{text-align:center;padding:18px 12px 26px;font:12px Arial,sans-serif;color:#8d9bad}
+.toast{display:none;margin:12px 0;padding:12px;border-radius:12px;background:#f1f8ff;color:#557da5;font:13px Arial,sans-serif}
+@media(max-width:460px){.details{padding:16px}.detail{padding:14px 8px}.value{font-size:15px}section{padding-left:18px;padding-right:18px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+ <main class="card">
+  <header class="hero">
+   <div class="kicker">Uma doce surpresa está chegando</div>
+   <div class="balloons">🩵 🎈 🩷</div>
+   <h1>Chá Revelação</h1>
+   <div class="names">Mislene &amp; Gabriel</div>
+   <div class="subtitle">Um amor que já é imenso…<br>e uma surpresa que está quase chegando!</div>
+   <div class="ribbon">MENINO OU MENINA?</div>
+  </header>
+  <div class="details">
+   <div class="detail"><div class="label">Data</div><div class="value">Domingo<br><strong>06 de dezembro de 2026</strong></div></div>
+   <div class="detail"><div class="label">Horário</div><div class="value"><strong>13h00</strong></div></div>
+   <div class="detail full"><div class="label">Local</div><div class="value">R. Amélia Pereira Hernandes, 915<br>Ferraz de Vasconcelos – SP<br>CEP 08509-200</div></div>
+  </div>
+  <section>
+   <h2>Qual é o seu palpite?</h2>
+   <p>Entre para a torcida e escolha sua aposta!</p>
+   <div class="votes">
+    <button class="vote boy" type="button" data-vote="Menino"><span>🩵</span>É MENINO!</button>
+    <button class="vote girl" type="button" data-vote="Menina"><span>🩷</span>É MENINA!</button>
+   </div>
+   <div id="voteMsg" class="toast" role="status"></div>
+  </section>
+  <section style="background:#fffafd">
+   <h2>Você vem comemorar com a gente?</h2>
+   <p>Confirme sua presença. Sua companhia vai deixar esse dia ainda mais especial!</p>
+   <form id="rsvp">
+    <div class="field"><label for="guest">Seu nome</label><input id="guest" name="guest" required placeholder="Digite seu nome"></div>
+    <div class="field"><label for="attendance">Confirmação</label><select id="attendance"><option value="Sim, estarei presente!">Sim, estarei presente!</option><option value="Infelizmente não poderei comparecer.">Infelizmente não poderei comparecer.</option></select></div>
+    <div class="field" id="plusWrap"><label for="plus">Acompanhantes (além de você)</label><select id="plus"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option></select></div>
+    <button class="primary" type="submit">💌 Confirmar pelo WhatsApp</button>
+   </form>
+   <div class="note">Ao confirmar, o WhatsApp será aberto com sua mensagem pronta para enviar aos papais.</div>
+  </section>
+ </main>
+ <footer>Com carinho, Mislene &amp; Gabriel 🩵🩷</footer>
+</div>
+<script>
+let selectedVote = "";
+const voteMsg = document.getElementById("voteMsg");
+document.querySelectorAll("[data-vote]").forEach(btn => btn.addEventListener("click", () => {
+ selectedVote = btn.dataset.vote;
+ document.querySelectorAll("[data-vote]").forEach(b => b.classList.toggle("selected", b === btn));
+ voteMsg.style.display = "block";
+ voteMsg.textContent = "Seu palpite: " + selectedVote + "! Agora confirme sua presença abaixo. 🥰";
+}));
+const attendance = document.getElementById("attendance");
+const plusWrap = document.getElementById("plusWrap");
+attendance.addEventListener("change", () => { plusWrap.style.display = attendance.value.startsWith("Sim") ? "block" : "none"; });
+document.getElementById("rsvp").addEventListener("submit", e => {
+ e.preventDefault();
+ const name = document.getElementById("guest").value.trim();
+ if (!name) return;
+ const answer = attendance.value;
+ const plus = answer.startsWith("Sim") ? document.getElementById("plus").value : "0";
+ const message = `Olá, Mislene e Gabriel! Aqui é ${name}. ${answer}${answer.startsWith("Sim") ? ` Vou levar ${plus} acompanhante(s).` : ""} Meu palpite para o bebê é: ${selectedVote || "Ainda não escolhi"}. Até dia 06/12!`;
+ const url = "https://wa.me/5511947528345?text=" + encodeURIComponent(message);
+ window.open(url, "_blank", "noopener");
+});
+</script>
+</body>
+</html>
