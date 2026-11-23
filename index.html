@@ -32,7 +32,11 @@ p{font:14px/1.6 Arial,sans-serif;color:#718197;margin:8px auto 18px}
 input,select{width:100%;padding:14px 15px;border:1px solid #e4e9f0;border-radius:13px;font:15px Arial,sans-serif;color:#52647b;background:white;outline:none}
 input:focus,select:focus{border-color:#9dbddd;box-shadow:0 0 0 3px #dcecff}
 .primary{width:100%;border:0;border-radius:999px;padding:16px 18px;background:linear-gradient(100deg,#83add7,#d88eae);color:white;font:700 14px Arial,sans-serif;letter-spacing:.5px;cursor:pointer;margin-top:8px}
+.primary:disabled{opacity:.65;cursor:not-allowed}
 .note{font:12px/1.5 Arial,sans-serif;color:#99a5b4;margin-top:13px}
+.feedback{display:none;margin-top:14px;padding:14px;border-radius:14px;font:14px/1.5 Arial,sans-serif;text-align:center}
+.feedback.ok{background:#eef8f2;color:#2f6f4e;border:1px solid #c7e8d5}
+.feedback.err{background:#fff0f2;color:#9e3b4b;border:1px solid #f5c9d0}
 footer{text-align:center;padding:18px 12px 26px;font:12px Arial,sans-serif;color:#8d9bad}
 .toast{display:none;margin:12px 0;padding:12px;border-radius:12px;background:#f1f8ff;color:#557da5;font:13px Arial,sans-serif}
 @media(max-width:460px){.details{padding:16px}.detail{padding:14px 8px}.value{font-size:15px}section{padding-left:18px;padding-right:18px}}
@@ -79,18 +83,21 @@ footer{text-align:center;padding:18px 12px 26px;font:12px Arial,sans-serif;color
   </section>
   <section style="background:#fffafd">
    <h2>Você vem comemorar com a gente?</h2>
-   <p>Confirme sua presença. Sua companhia vai deixar esse dia ainda mais especial!</p>
+   <p>Preencha o formulário abaixo para confirmar sua presença.</p>
    <form id="rsvp">
-    <div class="field"><label for="guest">Seu nome</label><input id="guest" name="guest" required placeholder="Digite seu nome"></div>
-    <div class="field"><label for="attendance">Confirmação</label><select id="attendance"><option value="Sim, estarei presente!">Sim, estarei presente!</option><option value="Infelizmente não poderei comparecer.">Infelizmente não poderei comparecer.</option></select></div>
-    <button class="primary" type="submit">💌 Confirmar pelo WhatsApp</button>
+    <div class="field"><label for="guest">Seu nome</label><input id="guest" name="Nome" required placeholder="Digite seu nome"></div>
+    <div class="field"><label for="attendance">Confirmação</label><select id="attendance" name="Confirmacao"><option value="Sim, estarei presente!">Sim, estarei presente!</option><option value="Infelizmente não poderei comparecer.">Infelizmente não poderei comparecer.</option></select></div>
+    <button class="primary" type="submit" id="submitBtn">✅ Enviar confirmação</button>
    </form>
-   <div class="note">Ao confirmar, o WhatsApp será aberto com sua mensagem pronta para enviar aos papais.</div>
+   <div id="formFeedback" class="feedback" role="status"></div>
+   <div class="note">Sua resposta será enviada diretamente para os papais pelo formulário.</div>
   </section>
  </main>
  <footer>Com carinho, Mislene &amp; Gabriel 🩵🩷</footer>
 </div>
 <script>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx1gs9lnd2O1e5MmiGiPKpprOI5FFjtQdKLOVH-eAGvhH9tLT-OAk4_hXI_QHR-alZGng/exec";
+
 document.getElementById("addCalendarBtn").addEventListener("click", () => {
  const ics = [
   "BEGIN:VCALENDAR",
@@ -122,12 +129,49 @@ document.querySelectorAll("[data-vote]").forEach(btn => btn.addEventListener("cl
  selectedVote = btn.dataset.vote;
  document.querySelectorAll("[data-vote]").forEach(b => b.classList.toggle("selected", b === btn));
  voteMsg.style.display = "block";
- voteMsg.textContent = "Seu palpite: " + selectedVote + "! Agora confirme sua presença abaixo. 🥰";
+ voteMsg.textContent = "Seu palpite: " + selectedVote + "! Agora preencha o formulário abaixo. 🥰";
 }));
-const attendance = document.getElementById("attendance");
-document.getElementById("rsvp").addEventListener("submit", e => {
+
+const rsvpForm = document.getElementById("rsvp");
+const submitBtn = document.getElementById("submitBtn");
+const feedback = document.getElementById("formFeedback");
+
+rsvpForm.addEventListener("submit", async e => {
  e.preventDefault();
  const name = document.getElementById("guest").value.trim();
+ const attendance = document.getElementById("attendance").value;
  if (!name) return;
- const answer = attendance.value;
- const message = `Olá, Mislene e Gabriel! Aqui é ${name}.${answer} Meu palpite para o bebê é
+
+ submitBtn.disabled = true;
+ submitBtn.textContent = "Enviando...";
+ feedback.style.display = "none";
+
+ try {
+  await fetch(SCRIPT_URL, {
+   method: "POST",
+   mode: "no-cors",
+   headers: { "Content-Type": "text/plain;charset=utf-8" },
+   body: JSON.stringify({
+    Nome: name,
+    Confirmacao: attendance,
+    Palpite: selectedVote || "Não escolheu"
+   })
+  });
+  feedback.className = "feedback ok";
+  feedback.textContent = "Confirmação enviada com sucesso! Obrigado, " + name + ". 💖";
+  feedback.style.display = "block";
+  rsvpForm.reset();
+  selectedVote = "";
+  document.querySelectorAll("[data-vote]").forEach(b => b.classList.remove("selected"));
+  voteMsg.style.display = "none";
+ } catch (err) {
+  feedback.className = "feedback err";
+  feedback.textContent = "Não foi possível enviar agora. Tente novamente em instantes.";
+  feedback.style.display = "block";
+ } finally {
+  submitBtn.disabled = false;
+  submitBtn.textContent = "✅ Enviar confirmação";
+ }
+});
+</script>
+</body>
