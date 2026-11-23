@@ -14,6 +14,7 @@
 h1{font-size:clamp(34px,8vw,54px);line-height:1.02;margin:15px 0 8px;color:#6e91b8;font-weight:500}
 .names{font-size:25px;color:#c8799b;margin:12px 0}.subtitle{font-size:18px;line-height:1.5;max-width:440px;margin:0 auto}
 .balloons{font-size:42px;letter-spacing:9px;margin:12px 0 2px}
+.hero-photo{display:block;width:100%;max-width:340px;height:auto;margin:18px auto 8px;border-radius:20px;box-shadow:0 10px 25px #6e91b824;border:3px solid #fff}
 .ribbon{display:inline-block;background:#fff;border-radius:999px;padding:10px 18px;margin-top:20px;color:#b66f91;font:700 12px Arial,sans-serif;letter-spacing:1.5px}
 .details{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:22px}
 .detail{background:#f8fbff;border-radius:18px;padding:17px;text-align:center}.detail.full{grid-column:1/-1;background:#fff7fa}
@@ -43,6 +44,7 @@ footer{text-align:center;padding:18px 12px 26px;font:12px Arial,sans-serif;color
   <header class="hero">
    <div class="kicker">Uma doce surpresa está chegando</div>
    <div class="balloons">🩵 🎈 🩷</div>
+   <img class="hero-photo" src="convite%20ch%C3%A1.jpeg" alt="Ilustração do Chá Revelação com ursinhos">
    <h1>Chá Revelação</h1>
    <div class="names">Mislene &amp; Gabriel</div>
    <div class="subtitle">Um amor que já é imenso…<br>e uma surpresa que está quase chegando!</div>
@@ -128,10 +130,4 @@ document.getElementById("rsvp").addEventListener("submit", e => {
  const name = document.getElementById("guest").value.trim();
  if (!name) return;
  const answer = attendance.value;
- const message = `Olá, Mislene e Gabriel! Aqui é ${name}. ${answer} Meu palpite para o bebê é: ${selectedVote || "Ainda não escolhi"}. Até dia 06/12!`;
- const url = "https://wa.me/5511947528345?text=" + encodeURIComponent(message);
- window.open(url, "_blank", "noopener");
-});
-</script>
-</body>
-</html>
+ const message = `Olá, Mislene e Gabriel! Aqui é ${name}.${answer} Meu palpite para o bebê é
