@@ -18,6 +18,9 @@ h1{font-size:clamp(34px,8vw,54px);line-height:1.02;margin:15px 0 8px;color:#6e91
 .details{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:22px}
 .detail{background:#f8fbff;border-radius:18px;padding:17px;text-align:center}.detail.full{grid-column:1/-1;background:#fff7fa}
 .label{font:700 10px Arial,sans-serif;letter-spacing:2px;text-transform:uppercase;color:#91a4ba}.value{font-size:17px;line-height:1.45;margin-top:7px}
+.actions{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:12px}
+.chip-btn{display:inline-flex;align-items:center;gap:6px;text-decoration:none;border:1px solid #dce6f2;background:#fff;color:#53647a;border-radius:999px;padding:8px 14px;font:700 12px Arial,sans-serif;cursor:pointer;transition:.2s}
+.chip-btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px #7894b31a}
 section{padding:10px 24px 26px;text-align:center}h2{font-size:27px;font-weight:500;color:#b87596;margin:12px 0 8px}
 p{font:14px/1.6 Arial,sans-serif;color:#718197;margin:8px auto 18px}
 .votes{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0}
@@ -46,9 +49,22 @@ footer{text-align:center;padding:18px 12px 26px;font:12px Arial,sans-serif;color
    <div class="ribbon">MENINO OU MENINA?</div>
   </header>
   <div class="details">
-   <div class="detail"><div class="label">Data</div><div class="value">Domingo<br><strong>06 de dezembro de 2026</strong></div></div>
+   <div class="detail">
+    <div class="label">Data</div>
+    <div class="value">Domingo<br><strong>06 de dezembro de 2026</strong></div>
+    <div class="actions">
+     <button class="chip-btn" type="button" id="addCalendarBtn">📅 Adicionar à agenda</button>
+    </div>
+   </div>
    <div class="detail"><div class="label">Horário</div><div class="value"><strong>13h00</strong></div></div>
-   <div class="detail full"><div class="label">Local</div><div class="value">R. Amélia Pereira Hernandes, 915<br>Ferraz de Vasconcelos – SP<br>CEP 08509-200</div></div>
+   <div class="detail full">
+    <div class="label">Local</div>
+    <div class="value">R. Amélia Pereira Hernandes, 915<br>Ferraz de Vasconcelos – SP<br>CEP 08509-200</div>
+    <div class="actions">
+     <a class="chip-btn" href="https://www.google.com/maps/search/?api=1&amp;query=R.+Am%C3%A9lia+Pereira+Hernandes,+915,+Ferraz+de+Vasconcelos+-+SP,+08509-200" target="_blank" rel="noopener noreferrer">🗺️ Google Maps</a>
+     <a class="chip-btn" href="https://waze.com/ul?q=R.%20Am%C3%A9lia%20Pereira%20Hernandes%2C%20915%2C%20Ferraz%20de%20Vasconcelos%20-%20SP%2C%2008509-200&amp;navigate=yes" target="_blank" rel="noopener noreferrer">🚗 Waze</a>
+    </div>
+   </div>
   </div>
   <section>
    <h2>Qual é o seu palpite?</h2>
@@ -73,6 +89,31 @@ footer{text-align:center;padding:18px 12px 26px;font:12px Arial,sans-serif;color
  <footer>Com carinho, Mislene &amp; Gabriel 🩵🩷</footer>
 </div>
 <script>
+document.getElementById("addCalendarBtn").addEventListener("click", () => {
+ const ics = [
+  "BEGIN:VCALENDAR",
+  "VERSION:2.0",
+  "PRODID:-//Cha Revelacao Mislene e Gabriel//PT",
+  "BEGIN:VEVENT",
+  "DTSTART;TZID=America/Sao_Paulo:20261206T130000",
+  "DTEND;TZID=America/Sao_Paulo:20261206T170000",
+  "SUMMARY:Chá Revelação • Mislene & Gabriel",
+  "DESCRIPTION:Venha comemorar com a gente e dar o seu palpite!",
+  "LOCATION:R. Amélia Pereira Hernandes, 915, Ferraz de Vasconcelos - SP, 08509-200",
+  "END:VEVENT",
+  "END:VCALENDAR"
+ ].join("\r\n");
+ const blob = new Blob([ics], { type: "text/calendar;charset=utf-8" });
+ const url = URL.createObjectURL(blob);
+ const link = document.createElement("a");
+ link.href = url;
+ link.download = "cha-revelacao-mislene-gabriel.ics";
+ document.body.appendChild(link);
+ link.click();
+ link.remove();
+ setTimeout(() => URL.revokeObjectURL(url), 1000);
+});
+
 let selectedVote = "";
 const voteMsg = document.getElementById("voteMsg");
 document.querySelectorAll("[data-vote]").forEach(btn => btn.addEventListener("click", () => {
