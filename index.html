@@ -65,7 +65,6 @@ footer{text-align:center;padding:18px 12px 26px;font:12px Arial,sans-serif;color
    <form id="rsvp">
     <div class="field"><label for="guest">Seu nome</label><input id="guest" name="guest" required placeholder="Digite seu nome"></div>
     <div class="field"><label for="attendance">Confirmação</label><select id="attendance"><option value="Sim, estarei presente!">Sim, estarei presente!</option><option value="Infelizmente não poderei comparecer.">Infelizmente não poderei comparecer.</option></select></div>
-    <div class="field" id="plusWrap"><label for="plus">Acompanhantes (além de você)</label><select id="plus"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option></select></div>
     <button class="primary" type="submit">💌 Confirmar pelo WhatsApp</button>
    </form>
    <div class="note">Ao confirmar, o WhatsApp será aberto com sua mensagem pronta para enviar aos papais.</div>
@@ -83,15 +82,12 @@ document.querySelectorAll("[data-vote]").forEach(btn => btn.addEventListener("cl
  voteMsg.textContent = "Seu palpite: " + selectedVote + "! Agora confirme sua presença abaixo. 🥰";
 }));
 const attendance = document.getElementById("attendance");
-const plusWrap = document.getElementById("plusWrap");
-attendance.addEventListener("change", () => { plusWrap.style.display = attendance.value.startsWith("Sim") ? "block" : "none"; });
 document.getElementById("rsvp").addEventListener("submit", e => {
  e.preventDefault();
  const name = document.getElementById("guest").value.trim();
  if (!name) return;
  const answer = attendance.value;
- const plus = answer.startsWith("Sim") ? document.getElementById("plus").value : "0";
- const message = `Olá, Mislene e Gabriel! Aqui é ${name}. ${answer}${answer.startsWith("Sim") ? ` Vou levar ${plus} acompanhante(s).` : ""} Meu palpite para o bebê é: ${selectedVote || "Ainda não escolhi"}. Até dia 06/12!`;
+ const message = `Olá, Mislene e Gabriel! Aqui é ${name}. ${answer} Meu palpite para o bebê é: ${selectedVote || "Ainda não escolhi"}. Até dia 06/12!`;
  const url = "https://wa.me/5511947528345?text=" + encodeURIComponent(message);
  window.open(url, "_blank", "noopener");
 });
